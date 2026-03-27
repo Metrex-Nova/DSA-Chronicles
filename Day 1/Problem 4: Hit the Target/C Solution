@@ -1,0 +1,100 @@
+
+Problem Description:
+Given an M x N grid containing three numbers: 0, 1, 2. You want to travel from the top-left
+corner (0,0) to the target cell containing 2. You have to follow the following rules while travelling:
+● Cells marked with 0 are empty cells and can be visited.
+● Cells marked with 1 are blocked cells and can NOT be visited.
+● Cells marked with 2 are the Target Cells.
+● You can move Up, Down, Left, or Right.
+● You cannot move beyond boundaries.
+Find the minimum number of points to move upon to reach the target cell containing 2 from (0,0)
+(including start and target). It is guaranteed that such a path will always exist.
+
+Sample Test Case 1:
+Input:
+3 4
+0 0 0 0
+0 1 1 0
+0 1 0 2
+Output:
+6
+Explanation:
+Followed path is shown:
+P P P P
+0 1 1 P
+0 1 0 P
+
+Sample Test Case 2:
+Input:
+5 5
+0 0 0 0 0
+0 1 0 0 0
+1 0 0 1 1
+0 0 1 2 0
+0 0 0 0 0
+Output:
+11
+Explanation:
+Followed path is shown:
+P P P 0 0
+0 1 P 0 0
+1 P P 1 1
+0 P 1 P 0
+0 P P P 0
+
+
+
+Solution:- 
+
+#include<stdio.h>
+#include<stdlib.h>
+#include<string.h>
+#define MAX 100
+typedef struct{
+    int x;
+    int y;
+    int dist;
+} Node;
+int main(){
+    printf("Hello World!\n");
+    int m;
+    int n;
+    printf("Please enter the number of rows: ");
+    scanf("%d", &m);
+    printf("Please enter the number of columns: ");
+    scanf("%d", &n);
+    int grid[m][n];
+    for(int i = 0; i<m; i++){
+        for(int j = 0; j<n; j++){
+            printf("Please enter info of node %d %d: ", i, j);
+            scanf("%d", &grid[i][j]);
+        }
+    }
+    int visited[MAX][MAX] = {0};
+    Node queue[MAX*MAX];
+    int front = 0;
+    int rear = -1;
+    queue[++rear] = (Node){0,0,1};
+    visited[0][0] = 1;
+    int dx[] = {1, 0, -1, 0};
+    int dy[] = {0, 1, 0, -1};
+    while(front<=rear){
+        Node curr = queue[front++];
+        int x = curr.x;
+        int y = curr.y;
+        int dist = curr.dist;
+        if(grid[x][y] == 2){
+            printf("%d\n", dist);
+            return 0;
+        }
+        for(int i = 0; i<4; i++){
+            int nx = x  + dx[i];
+            int ny = y  + dy[i];
+            if(nx>=0 && nx<m && ny >=0 && ny<n && !visited[nx][ny] && grid[nx][ny] != 1){
+                visited[nx][ny] = 1;
+                queue[++rear] = (Node){nx, ny, dist + 1};
+            }
+        }
+    }
+    return 0;
+}
