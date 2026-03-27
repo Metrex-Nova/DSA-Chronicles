@@ -1,0 +1,60 @@
+Problem Description:
+Given a queue of N integers and an integer K, you must reverse the order of the first K
+elements of the queue, while leaving the remaining elements in their original relative order. You
+must read the input values into a Queue first.
+
+Sample Test Case 1:
+Input:
+5 3
+10 20 30 40 50
+Output:
+30 20 10 40 50
+Sample Test Case 2:
+Input:
+7 4
+58 61 103 2 8 12 76
+Output:
+2 103 61 58 8 12 76
+
+
+Solution:- 
+#include <stdio.h>
+#define MAX 1000
+
+int main() {
+    int n, k;
+    scanf("%d %d", &n, &k);
+
+    int queue[MAX];
+    for(int i = 0; i < n; i++){
+        scanf("%d", &queue[i]);
+    }
+
+    int front = 0, rear = n - 1;
+
+    int stack[MAX];
+    int top = -1;
+
+    // Step 1: push first k elements into stack
+    for(int i = 0; i < k; i++){
+        stack[++top] = queue[front++];
+    }
+
+    // Step 2: pop from stack and enqueue back (reversed)
+    while(top >= 0){
+        queue[++rear] = stack[top--];
+    }
+
+    // Step 3: move remaining n-k elements to rear
+    int remaining = n - k;
+    for(int i = 0; i < remaining; i++){
+        queue[++rear] = queue[front++];
+    }
+
+    // Step 4: print result
+    while(front <= rear){
+        printf("%d ", queue[front++]);
+    }
+
+    return 0;
+}
