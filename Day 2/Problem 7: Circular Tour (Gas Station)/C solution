@@ -1,0 +1,64 @@
+Problem Description:
+Suppose there is a circle with N gas stations. You are given two sets of data:
+1. The amount of gas that every gas station has.
+2. The distance from that gas station to the next gas station.
+You have a car with an unlimited fuel tank and it costs 1 unit of gas to travel 1 unit of distance.
+You must find the starting point from where the car can complete a full circle without running
+out of gas. If multiple such points exist, return the earliest one. If no such point exists, return -1.
+
+Sample Test Case 1:
+Input:
+4
+4 6 7 4
+6 5 3 5
+Output:
+1
+Explanation:
+If we start at index 1 (gas=6, dist=5), we have 1 unit left. At index
+2 (gas=7, dist=3), we have 1+7-3=5 units left. At index 3 (gas=4,
+dist=5), we have 5+4-5=4 units left. Finally, at index 0 (gas=4,
+dist=6), we have 4+4-6=2 units, returning to index 1.
+
+Solution:- 
+
+#include<stdio.h>
+#include<stdlib.h>
+int main(){
+    printf("Hello World!\n");
+    int n;
+    printf("Please enter the number of stations: ");
+    scanf("%d", &n);
+    int dist[n];
+    int gas[n];
+    for(int i = 0; i<n; i++){
+        printf("Please enter the gas at station %d: ", i+1);
+        scanf("%d", &gas[i]);
+        printf("Please enter the distance between station %d and the next: ", i+1);
+        scanf("%d", &dist[i]);
+    }
+    int queue[1000];
+    for(int start = 0 ; start<n; start++){
+        int front = 0; 
+        int rear = -1;
+        int fuel = 0;
+        int count = 0;
+        int i = start;
+    
+    while(count<n){
+        queue[++rear] = i;
+        fuel = fuel + gas[i];
+        if(fuel<dist[i]){
+            break;
+        }
+        fuel = fuel - dist[i];
+        i = (i+1)%n;
+        count++;
+    }
+    if (count == n && fuel >= 0) {
+            printf("%d\n", start);
+            return 0;
+        }
+    }
+    printf("-1\n");
+    return 0;
+}
