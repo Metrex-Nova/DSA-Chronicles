@@ -1,0 +1,106 @@
+Problem Description: Implement a FIFO (First-In-First-Out) Queue using exactly two stacks.
+All elements added to the queue must be stored within these stacks. You must ensure that the
+basic queue operations—Enqueue, Dequeue, and Peek—behave exactly as they would in a
+standard queue, maintaining the correct order of elements. The queue should be implemented
+such that either Enqueue or Dequeue (depending on the chosen approach) runs in amortized
+O(1) time, since each element is transferred between the two stacks at most once overall.
+
+Sample Test Case 1:
+Input:
+9
+1 10
+1 20
+1 30
+1 40
+3
+2
+2
+1 50
+2
+Output:
+10
+10
+20
+30
+
+Sample Test Case 2:
+Input:
+10
+1 100
+3
+1 200
+1 300
+2
+2
+2
+2
+1 400
+3
+Output:
+100
+100
+200
+300
+-1
+400
+
+Solution:- 
+
+
+#include<stdio.h>
+#include<stdlib.h>
+#define MAX 1000
+
+int main(){
+    printf("Hello World!\n");
+
+    int t;
+    printf("Please enter number of operations: ");
+    scanf("%d", &t);
+
+    int s1[MAX], s2[MAX];
+    int top1 = -1, top2 = -1;
+
+    for(int i = 0; i<t; i++){
+        int type;
+        printf("Enter operation type: ");
+        scanf("%d", &type);
+
+        if(type == 1){
+            int x;
+            printf("Enter value to enqueue: ");
+            scanf("%d", &x);
+            s1[++top1] = x;
+        }
+
+        else if(type == 2){
+            if(top1 == -1 && top2 == -1){
+                printf("-1\n");
+            }
+            else{
+                if(top2 == -1){
+                    while(top1 != -1){
+                        s2[++top2] = s1[top1--];
+                    }
+                }
+                printf("%d\n", s2[top2--]);
+            }
+        }
+
+        else if(type == 3){
+            if(top1 == -1 && top2 == -1){
+                printf("-1\n");
+            }
+            else{
+                if(top2 == -1){
+                    while(top1 != -1){
+                        s2[++top2] = s1[top1--];
+                    }
+                }
+                printf("%d\n", s2[top2]);
+            }
+        }
+    }
+
+    return 0;
+}
