@@ -1,0 +1,56 @@
+Problem Description:
+You are processing a live stream of lowercase characters. As each character arrives, you must
+determine the earliest character in the stream that has appeared exactly once so far. If at any
+point every character received has appeared at least twice, print -1. You must implement this
+efficiently using a Queue to maintain the order of arrival and a frequency tracking mechanism.
+
+Sample Test Case 1:
+Input: racecar
+Output: r r r r r r e
+Explanation: 'r' remains the oldest unique character through the first six letters because,
+although 'a' and 'c' repeat, 'r' does not repeat until the very last character. When the final 'r'
+arrives, all previous characters ('r', 'a', 'c') have repeated, leaving 'e' as the only and earliest
+unique character.
+Sample Test Case 2:
+Input: aabbcdefgh
+Output: a -1 b -1 c c c c c c
+Explanation: The first two 'a's cancel each other out to output -1, then the arrival of 'b's does
+the same, leaving the queue empty again. Once 'c' arrives, it becomes the oldest unique
+character and remains so for the rest of the stream, as 'd' through 'h' are all "younger" than 'c'.
+
+
+
+Solution:- 
+
+#include<stdio.h>
+#include<stdlib.h>
+#include<string.h>
+
+#define MAX 1000
+int main(){
+    printf("Hello World!\n");
+    char S[MAX];
+    printf("PLease enter the string: ");
+    scanf("%s", &S);
+    char queue[MAX];
+    int front = 0; 
+    int rear = -1;
+    int freq[26] = {0};
+    int n = strlen(S);
+    for(int i = 0; i<n; i++){
+        char ch = S[i];
+        freq[ch -'a']++;
+        queue[++rear] = ch;
+        while(front<=rear && freq[queue[front] -'a'] >1){
+            front++;
+        }
+        if(front<=rear){
+            printf("%c", queue[front]);
+        } 
+        else{
+            printf("-1");
+        }
+    }
+    return 0;
+}
+
