@@ -1,0 +1,46 @@
+Problem Description:
+Given an integer N, generate and print all binary numbers from 1 to N in increasing order. To
+ensure optimal performance, you must use a Queue data structure to generate these numbers
+as strings sequentially rather than using built-in mathematical conversions for every individual
+number.
+
+Sample Test Case 1:
+Input:
+5
+Output:
+1 10 11 100 101
+Sample Test Case 2:
+Input:
+7
+Output:
+1 10 11 100 101 110 111
+
+Solution:- 
+#include<stdio.h>
+#include<stdlib.h>
+#include<string.h>
+#define MAX 1000
+int main(){
+    printf("Hello World!\n");
+    char queue[MAX][MAX];
+    int n;
+    printf("Please enter the integer: ");
+    scanf("%d", &n);
+    int front = 0; 
+    int rear = -1;
+    strcpy(queue[++rear], "1");
+    for(int i = 0; i<n; i++){
+        char curr[MAX];
+        strcpy(curr, queue[front++]);
+        printf("%s\n", curr);
+        
+        char next1[MAX];
+        char next2[MAX];
+        strcpy(next1, curr);
+        strcat(next1, "0");
+        strcpy(next2, curr);
+        strcat(next2, "1");
+        strcpy(queue[++rear], next1);
+        strcpy(queue[++rear], next2);
+    }
+    return 0;
