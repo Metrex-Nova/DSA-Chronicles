@@ -1,0 +1,122 @@
+Problem Description:
+A Special number is a positive integer whose prime factors are limited to 2, 5 and 7 only.
+Given an integer N, print the N-th Special number using a Min-Heap.
+Hint: Maintain a Min-Heap to continuously generate the sequence in order. Keep on multiplying
+the current smallest number with the three prime numbers 2, 5, 7 to add in the heap.
+
+Sample Test Case 1:
+Input:
+10
+Output:
+25
+Explanation:
+Smallest 10 Special numbers: 2, 4, 5, 7, 8, 10, 14, 16, 20, 25
+Sample Test Case 2:
+Input:
+37
+Output:
+343
+
+Solution:- 
+
+#include<stdio.h>
+#include<stdlib.h>
+
+#define MAX 100000
+
+int heap[MAX];
+int size = 0;
+void swap(int *a, int *b){
+    int temp = *a;
+    *a = *b;
+    *b = temp;
+}
+
+//heapify up function
+void heapify_up(int i){
+    while(i>0){
+        int parent = (i-1)/2;
+        if(heap[parent] > heap[i]){
+            swap(&heap[parent], &heap[i]);
+            i = parent; // move up
+        }
+        else{
+            break;
+        }
+    }
+}
+// heapify down
+void heapify_down(int i){
+    while(1){
+        int left = 2 * i + 1;
+        int right = 2 * i + 2;
+        int smallest = i;
+        if(left < size && heap[left] < heap[smallest]){
+            smallest = left;
+        }
+        if(right<size && heap[right] < heap[smallest]){
+            smallest = right;
+        }
+        if(smallest != i){
+            swap(&heap[smallest], &heap[i]);
+            i = smallest; // mode down
+        }
+        else{
+            break;
+        }
+    }
+}
+// insertion function
+void insert(int val){
+    heap[size] = val;
+    size++;
+    heapify_up(size - 1);
+}
+int extract_min(){
+    int val = heap[0];
+    swap(&heap[0], &heap[size-1]);
+    size--;
+    heapify_down(0);
+    return val;
+}
+
+
+
+int main(){
+    printf("Hello World!\n");
+    int n;
+    printf("Please tell the number of special numbers you want: ");
+    scanf("%d", &n);
+    int visited[100001] = {0};
+    insert(2);
+    visited[2] = 1;
+    insert(5);
+    visited[5] = 1;
+    insert(7);
+    visited[7] = 1;
+    int x;
+    int count = 0;
+    int ans;
+    for(int i = 0 ; i<n ; i++){
+        x = extract_min();
+        count++;
+        if(count == n){
+            ans = x;
+        }
+        printf("%d ", x);
+        if(visited[2*x] != 1){
+            insert(2*x);
+            visited[2*x] = 1;
+        }
+        if(visited[5*x] != 1){
+            insert(5*x);
+            visited[5*x] = 1;
+        }
+        if(visited[7*x] != 1){
+            insert(7*x);
+            visited[7*x] = 1;
+        }
+    }
+    printf("\nThe special number at position %d is %d", n, ans);
+    return 0;
+}
